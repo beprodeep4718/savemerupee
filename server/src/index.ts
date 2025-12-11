@@ -5,7 +5,6 @@ import exampleRouter from './routes/example';
 import authRouter from './routes/auth.route';
 import userRouter from './routes/user.route';
 import paymentRouter from './routes/payment.route';
-import adminRouter from './routes/admin.route';
 import connectDB from './utils/db';
 
 dotenv.config();
@@ -20,7 +19,6 @@ app.use('/api', exampleRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
 app.use('/api/payment', paymentRouter);
-app.use('/api/admin', adminRouter);
 
 app.get('/', (_req, res) => {
   res.json({ status: 'ok' });

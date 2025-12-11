@@ -23,8 +23,9 @@ export const authController = {
           success: true,
           message: "Verification code sent successfully.",
         });
-    } catch (error) {
-      console.error("Twilio error in sendOTP:", error.message);
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : "Unknown error";
+      console.error("Twilio error in sendOTP:", errorMessage);
       // Twilio often returns helpful error codes (e.g., invalid phone number format)
       res
         .status(500)
@@ -80,8 +81,9 @@ export const authController = {
           .status(401)
           .send({ success: false, message: "Invalid verification code." });
       }
-    } catch (error) {
-      console.error("Twilio error in verifyOTP:", error.message);
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : "Unknown error";
+      console.error("Twilio error in verifyOTP:", errorMessage);
       return res
         .status(500)
         .send({ success: false, message: "Verification failed." });
