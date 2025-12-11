@@ -7,7 +7,10 @@ import { LogOut, User, Cake, Save, X, Edit, Phone, TrendingUp, Wallet, Copy, Che
 
 declare global {
   interface Window {
-    Razorpay: any;
+    Razorpay: {
+      new (options: Record<string, unknown>): { open: () => void };
+      [key: string]: unknown;
+    };
   }
 }
 
@@ -23,6 +26,25 @@ interface WalletData {
       phoneNumber: string;
     };
   }>;
+}
+
+interface InfoCardProps {
+  Icon: React.ComponentType<{ className: string }>;
+  label: string;
+  value: string | number;
+  color: string;
+  bgColor: string;
+}
+
+interface InputFieldProps {
+  id: string;
+  label: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  placeholder: string;
+  type: string;
+  min?: string;
+  max?: string;
 }
 
 function Dashboard() {
@@ -138,8 +160,9 @@ function Dashboard() {
       const response = await axiosClient.post('/payment/request-disbursement');
       alert(response.data.message);
       fetchWalletData();
-    } catch (error: any) {
-      alert(error.response?.data?.message || 'Failed to request disbursement');
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to request disbursement';
+      alert(errorMessage);
     }
   };
 
@@ -282,7 +305,7 @@ function Dashboard() {
                       id="name"
                       label="Full Name"
                       value={name}
-                      onChange={(e: any) => setName(e.target.value)}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
                       placeholder="Enter your full name"
                       type="text"
                       min=""
@@ -293,7 +316,7 @@ function Dashboard() {
                       id="age"
                       label="Age"
                       value={age}
-                      onChange={(e: any) => setAge(e.target.value)}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAge(e.target.value)}
                       placeholder="Enter your age"
                       type="number"
                       min="1"
@@ -341,7 +364,7 @@ function Dashboard() {
             ) : (
               <>
                 {/* Wallet Balance Card */}
-                <div className="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-2xl p-8 text-white shadow-xl">
+                <div className="bg-linear-to-r from-emerald-600 to-teal-600 rounded-2xl p-8 text-white shadow-xl">
                   <div className="flex items-center gap-3 mb-4">
                     <Wallet className="w-8 h-8" />
                     <h2 className="text-2xl font-bold">Wallet Balance</h2>
@@ -474,7 +497,7 @@ export default Dashboard;
 // --- Reusable Sub-Components for Professionalism ---
 
 // Info Card Component (For Display Mode)
-const InfoCard = ({ Icon, label, value, color, bgColor }) => (
+const InfoCard = ({ Icon, label, value, color, bgColor }: InfoCardProps) => (
     <div className={`${bgColor} rounded-xl p-6 border border-gray-100 transition-all hover:shadow-sm`}>
         <div className="flex items-center gap-4 mb-3">
             <div className={`p-3 rounded-xl ${bgColor} border-2 ${color} border-opacity-30`}>
@@ -487,7 +510,7 @@ const InfoCard = ({ Icon, label, value, color, bgColor }) => (
 );
 
 // Input Field Component (For Edit Mode)
-const InputField = ({ id, label, value, onChange, placeholder, type, min, max }) => (
+const InputField = ({ id, label, value, onChange, placeholder, type, min, max }: InputFieldProps) => (
     <div>
         <label htmlFor={id} className="block text-sm font-semibold text-gray-700 mb-2">
             {label}

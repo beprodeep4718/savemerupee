@@ -6,7 +6,10 @@ import { Wallet, TrendingUp, Users, Copy, Check, CreditCard } from 'lucide-react
 
 declare global {
   interface Window {
-    Razorpay: any;
+    Razorpay: {
+      new (options: Record<string, unknown>): { open: () => void };
+      [key: string]: unknown;
+    };
   }
 }
 

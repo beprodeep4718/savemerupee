@@ -7,7 +7,10 @@ import { ArrowLeft, CreditCard, Copy, Check } from 'lucide-react';
 
 declare global {
   interface Window {
-    Razorpay: any;
+    Razorpay: {
+      new (options: Record<string, unknown>): { open: () => void };
+      [key: string]: unknown;
+    };
   }
 }
 
@@ -119,7 +122,7 @@ export default function Payment() {
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
           {/* Order Summary */}
-          <div className="bg-gradient-to-r from-emerald-600 to-teal-600 px-8 py-10 text-white">
+          <div className="bg-linear-to-r from-emerald-600 to-teal-600 px-8 py-10 text-white">
             <h2 className="text-3xl font-bold mb-2">Order Summary</h2>
             <p className="text-emerald-100">Complete your payment to access premium features</p>
           </div>

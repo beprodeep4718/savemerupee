@@ -93,7 +93,7 @@ export default function HowItWorks() {
   );
 }
 
-function StepContent({ step, index }: { step: typeof steps[0]; index: number }) {
+function StepContent({ step }: { step: typeof steps[0]; index: number }) {
   return (
     <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow">
       <h3 className="text-2xl font-bold text-gray-900 mb-3">
